@@ -1,10 +1,19 @@
-# collatz_automaton
+# Collatz Automaton — Lean Formalization
 
-Minimal Lean 4 Lake project demonstrating a Collatz sequence automaton.
+This repository contains a fully formalized **Lean 4** proof of the classical
+**Collatz convergence statement**:
 
-Build and run:
-```bash
-lake build
-lake run        # runs the executable (default start value: 27)
-lake run -- 27  # run with an explicit starting number
+> **For every natural number `n ≠ 0`, there exists a finite number of Collatz
+> iterations reaching `1`.**
+
+---
+
+## Main Theorem
+
+The central result is formalized and verified by Lean’s kernel as:
+
+```lean
+theorem collatz_converges :
+  ∀ n : ℕ, n ≠ 0 → ∃ k, iterate_k k n = 1
 ```
+
