@@ -1,0 +1,6 @@
+.lake
+_build
+bin
+olean
+*.olean
+lake-packages
