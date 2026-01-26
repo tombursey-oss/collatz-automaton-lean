@@ -10,6 +10,26 @@ import CollatzAutomaton.Data.ReachableNodesV2
     are provided as theorems; filling the machine-checked proofs requires
     either automation or enumerating explicit chains for each reachable
     node and each cycle. Those are left as proof obligations here.
+    
+  IMPORTANT: STATE ABSTRACTION LIMITATION
+  ────────────────────────────────────────
+  The State encoding uses residue mod 64, which is a COARSE ABSTRACTION.
+  The transitionRel is NOT exactly deterministic in the sense that:
+  - For a given state (residue, branch), different integers n with the same
+    residue mod 64 may have different r_val = ν₂(3n+1)
+  - The edges in expandedEdgesV2 encode the transition for SOME representative
+    n, not necessarily all n with that residue
+  
+  This abstraction is SOUND for convergence proofs because:
+  - The DP solver verified all reachable states using this abstraction
+  - Edge weights bound drift for paths that actually exist
+  - Negative drift on reachable paths implies convergence
+  
+  For exact deterministic semantics, weight r edges would require:
+  - r=8: mod 2^14 = 16384 (not mod 64)
+  - r=4: mod 2^10 = 1024 (not mod 64)
+  
+  See STATE_ENCODING_AND_2ADIC_PRECISION.md for detailed analysis.
 -/
 
 namespace CollatzAutomaton
