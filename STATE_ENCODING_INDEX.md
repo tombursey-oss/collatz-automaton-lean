@@ -51,7 +51,7 @@ The Collatz automaton uses a **coarse state abstraction** (residue mod 64 + bran
 Lines 1-28: Header comment explaining state abstraction
 Lines 35-49: Comments on Residue type (mod 64 limitation)
 Lines 55-64: Comments on State structure (coarse abstraction)
-Lines 89-120: Axiom `abstraction_is_sound_for_convergence`
+Lines 96-125: Axiom `mod64_abstraction_convergence_soundness`
 
 #### [src/CollatzAutomaton/Data/EdgeWeightsV0.lean](src/CollatzAutomaton/Data/EdgeWeightsV0.lean)
 Lines 69-111: Extended documentation on trust boundary
@@ -85,7 +85,7 @@ Lines 21-34: Prominent warning about state abstraction with links to documentati
 ### Trust Boundaries
 1. **CSV Data**: Pre-computed edge weights and r_vals are trusted
 2. **DP Solver**: Reachability and minimum weight sums are trusted
-3. **Axioms**: `edge_weight_encodes_drift` and `abstraction_is_sound_for_convergence`
+3. **Axioms**: `edge_weight_encodes_drift` and `mod64_abstraction_convergence_soundness`
 
 ### Precision Requirements by Weight
 

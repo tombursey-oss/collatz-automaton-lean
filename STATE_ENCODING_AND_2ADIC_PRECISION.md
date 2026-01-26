@@ -78,7 +78,7 @@ The repository takes a **pragmatic approach**:
 
 1. **Pre-computed Edge Data**: The `edgeWeightsV0.csv` and `expandedEdgesV2.csv` files contain pre-computed edges with their weights and valuations.
 
-2. **Trusted Computation**: The theorem `edge_weight_encodes_drift` (line 83-88 of `EdgeWeightsV0.lean`) is proven as `trivial`, meaning it's an **axiom** that the CSV data correctly encodes the relationship:
+2. **Trusted Computation**: The theorem `edge_weight_encodes_drift` (lines 100-110 of `EdgeWeightsV0.lean`) is proven as `trivial`, meaning it's an **axiom** that the CSV data correctly encodes the relationship:
    ```
    edge_weight = log₂(3 + 1/n) - r_val
    ```

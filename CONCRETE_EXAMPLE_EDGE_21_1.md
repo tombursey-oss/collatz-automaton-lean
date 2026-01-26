@@ -58,14 +58,10 @@ Let's test different integers n ≡ 21 (mod 64):
 
 ### n = 21 + 16384 = 16405
 ```
-3n + 1 = 3(16405) + 1 = 49216 = 2^8 × 192.25... (not exact)
-Wait, let's compute properly:
-3(16405) + 1 = 49216 = 2^8 × 192 + 0 = 2^8 × 192
-ν₂(49216) = ν₂(2^8 × 192) = 8 + ν₂(192) = 8 + ν₂(2^6 × 3) = 8 + 6 = 14 ❌
+3n + 1 = 3(16405) + 1 = 49216 = 2^6 × 769
+ν₂(49216) = 6 ≠ 8 ❌
 ```
-Actually: 49216 = 2^6 × 769, so ν₂(49216) = 6 ≠ 8 ❌
-
-Let me recalculate more carefully for the pattern.
+**Result:** r_val = 6, not 8. Edge does NOT apply to n=16405.
 
 ## Pattern Analysis
 

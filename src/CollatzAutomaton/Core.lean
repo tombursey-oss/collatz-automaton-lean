@@ -93,7 +93,7 @@ def next (n : Nat) : Nat :=
 partial def iterate (n : Nat) : List Nat :=
   if n == 1 then [1] else n :: iterate (next n)
 
-/-- ABSTRACTION SOUNDNESS THEOREM
+/-- ABSTRACTION SOUNDNESS AXIOM
 
     The coarse state abstraction (residue mod 64 + branch) is SOUND for
     convergence proofs even though it lacks exact deterministic semantics.
@@ -118,7 +118,7 @@ partial def iterate (n : Nat) : List Nat :=
     See STATE_ENCODING_AND_2ADIC_PRECISION.md for detailed analysis.
     See CONCRETE_EXAMPLE_EDGE_21_1.md for worked example.
 -/
-axiom abstraction_is_sound_for_convergence :
+axiom mod64_abstraction_convergence_soundness :
   -- The coarse mod 64 abstraction supports a sound convergence proof
   -- even though it doesn't support exact deterministic step semantics.
   -- This axiom captures trust in the computational DP solver's output.
