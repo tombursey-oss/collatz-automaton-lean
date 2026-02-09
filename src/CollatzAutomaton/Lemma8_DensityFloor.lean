@@ -1,5 +1,6 @@
 import CollatzAutomaton.Core
 import CollatzAutomaton.Graph
+import CollatzAutomaton.Path
 import CollatzAutomaton.Data.DPMinWindowsV2
 import CollatzAutomaton.Lemma7_DriftInequality
 
@@ -75,55 +76,41 @@ def dp_all_windows : List Window := [dpWindow0]
 -/
 def R_min : Nat := 29
 
-/-- Path over L steps with weight annotation. -/
-structure PathLen (L : Nat) where
-  start : State
-  steps : List State
-  len_eq : steps.length = L
+/-- Use canonical PathLen from CollatzAutomaton.Path instead -/
+-- PathLen is now imported from Path.lean and uses edges (not steps)
 
-/-- Extract the 2-adic valuation at each step in a path.
-    For step i, the valuation is r_val(state_i → state_{i+1}).
-
-    NOTE: This is a specification placeholder. In full implementation,
-    this would extract r_val from the edge weights or compute them
-    from the state residues.
+/-- Extract the 2-adic valuation window from a path.
+    Maps each edge weight (stored in the edge structure) to a valuation.
 -/
-def window_of_path (p : PathLen L) : Window := by
-  -- Convert the path steps to a valuation window
-  -- For now, specify structure; exact computation from edges handled elsewhere
-  have h_vals : (List.range L).map (fun i =>
-    if h : i < p.steps.length then (p.steps.get ⟨i, h⟩).residue % 10 else 0
-  ).length = L := by simp [List.length_range]
-  exact {
-    vals := (List.range L).map (fun i =>
-      if h : i < p.steps.length then (p.steps.get ⟨i, h⟩).residue % 10 else 0
-    )
-    len_eq := h_vals
-  }
+def windowVals {L : Nat} (p : PathLen L) : List Nat :=
+  p.edges.map edgeWeight
+
+/-- Lemma: window valuation list has correct length -/
+lemma windowVals_length {L : Nat} (p : PathLen L) :
+  (windowVals p).length = L := by
+  simp [windowVals, p.len_eq]
 
 /-- A window is "reachable" if it arises from a path starting at a reachable state. -/
 def ReachableWindow (w : Window) : Prop :=
-  ∃ (p : PathLen L), reachable p.start ∧ window_of_path p = w
+  ∃ (p : PathLen L), reachable p.start ∧ (windowVals p) = w.vals
 
-/-- Bridge Lemma 3a: Extract valuations from a length-L path
+/-- Bridge Lemma 3a: Window valuation list has correct length
 
-    Given a path p : PathLen L, extract the sequence of valuations
-    at each step. This connects arithmetic trajectories (via steps in State)
+    Given a path p : PathLen L, the extracted window valuations
+    have the correct length. This connects arithmetic trajectories (via paths)
     to the Window structure used by the DP bound.
-
-    Key property: The result is a valid Window (length = L).
 -/
-lemma window_of_path_valid (p : PathLen L) :
-  (window_of_path p).vals.length = L := by
-  exact (window_of_path p).len_eq
+lemma windowVals_valid {L : Nat} (p : PathLen L) :
+  (windowVals p).length = L := by
+  exact windowVals_length p
 
 /-- Bridge Lemma 3b: Reachable paths yield reachable windows
 
     If a path starts from a reachable state, the extracted window
     is by definition a ReachableWindow.
 -/
-lemma reachable_path_yields_reachable_window (p : PathLen L) (h : reachable p.start) :
-  ReachableWindow (window_of_path p) := by
+lemma reachable_path_yields_reachable_window {L : Nat} (p : PathLen L) (h : reachable p.start) :
+  ReachableWindow { vals := windowVals p, len_eq := windowVals_length p } := by
   exact ⟨p, h, rfl⟩
 
 /-- LEMMA 1: Window Encoding Identity
